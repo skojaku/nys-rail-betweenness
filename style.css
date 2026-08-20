@@ -1,0 +1,220 @@
+/* Erie Canal betweenness — page styles.
+
+   The design tokens, the type stacks, the wobble radii, the pen shadow and the
+   wavy stroke are lifted verbatim from adv-net-sci/lecture-note's
+   m01-euler_tour/pen-and-paper/lecture-hall.css, so this page reads as part of
+   the same course.
+
+   Its rule is kept too: THE HAND IS IN THE LINES, NOT IN THE LETTERS. The prose
+   is a system sans and the headings a system serif; what is drawn by hand is
+   everything not read as a word — the wavy rules, the wobbly borders, the pen
+   shadows, the sketched corridor. One handwritten line exists, in the margin,
+   and that is the whole point of it.
+
+   No webfont, no network request. */
+
+:root {
+  --lh-paper:   #FFFDF7;
+  --lh-card:    #FFFFFF;
+  --lh-surface: #F6F2E9;
+  --lh-line:    #E4E6EA;
+  --lh-rule:    #D9D2C2;
+  --lh-ink:     #1D1E21;
+  --lh-ink-2:   #35373C;
+  --lh-muted:   #6A6D75;
+  --lh-blue:    #22336B;
+  --lh-blue-2:  #3959A6;
+  --lh-rust:    #B14434;
+
+  --lh-serif:   "Iowan Old Style", "Palatino Linotype", Palatino,
+                "Book Antiqua", "Hoefler Text", Georgia,
+                "Times New Roman", serif;
+  --lh-sans:    system-ui, -apple-system, "Segoe UI", Roboto,
+                "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial,
+                sans-serif;
+  --lh-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                "Liberation Mono", monospace;
+  --lh-hand:    "Chalkboard SE", "Bradley Hand", "Segoe Print",
+                "Comic Sans MS", cursive;
+
+  --lh-wobble:   14px 6px 16px 8px / 8px 16px 6px 14px;
+  --lh-wobble-2: 6px 16px 8px 14px / 16px 6px 14px 8px;
+  --lh-pen:      3px 4px 0 -1px rgba(35, 34, 43, 0.16);
+  --lh-pen-soft: 2px 3px 0 -1px rgba(35, 34, 43, 0.12);
+
+  --lh-stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' viewBox='0 0 120 7'%3E%3Cpath d='M1 4.4C20 1.9 40 6.2 60 3.7 80 1.4 100 5.6 119 3.2' fill='none' stroke='%23B14434' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --lh-stroke-faint: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' viewBox='0 0 120 7'%3E%3Cpath d='M1 4.4C20 1.9 40 6.2 60 3.7 80 1.4 100 5.6 119 3.2' fill='none' stroke='%23D9D2C2' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* ---------- page ---------- */
+
+body {
+  margin: 0;
+  /* Dot-grid, not ruled lines: the same "this is a sketchbook" signal without
+     fighting a line of prose for the same horizontal band. */
+  background-color: var(--lh-paper);
+  background-image: radial-gradient(rgba(31, 58, 95, 0.085) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--lh-ink-2);
+  font-family: var(--lh-sans);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+  text-wrap: pretty;
+}
+
+h1, h2 {
+  font-family: var(--lh-serif);
+  font-weight: 600;
+  color: var(--lh-ink);
+  line-height: 1.25;
+}
+
+h1 { font-size: 37px; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+
+/* A chapter break — one of the places the pen still writes. */
+h2 {
+  font-size: 24px;
+  margin: 2.6rem 0 0.7rem;
+  padding-bottom: 0.18em;
+  background-image: var(--lh-stroke);
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: 120px 7px;
+}
+
+p { margin: 0 0 1rem; }
+strong { color: var(--lh-ink); font-weight: 700; }
+a { color: var(--lh-blue); text-decoration-color: var(--lh-line); }
+a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
+
+.standfirst { color: var(--lh-muted); margin-bottom: 2rem; }
+
+.num {
+  font-family: var(--lh-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95em;
+}
+
+/* ---------- the corridor ---------- */
+
+/* The six towns sit on one line because the canal is one line. Drawing it as a
+   sketch rather than a map is deliberate: the geography that matters here is
+   the order, not the coordinates. */
+.corridor {
+  margin: 1.5rem 0 2rem;
+  padding: 1.1rem 0.6rem 0.5rem;
+  background: var(--lh-card);
+  border: 2px solid var(--lh-ink);
+  border-radius: var(--lh-wobble);
+  box-shadow: var(--lh-pen);
+}
+.corridor svg { display: block; width: 100%; height: auto; }
+.corridor figcaption {
+  margin-top: 0.35rem;
+  padding: 0 0.6rem;
+  font-size: 14px;
+  color: var(--lh-muted);
+}
+
+/* ---------- ranking ---------- */
+
+.rank { list-style: none; margin: 1.2rem 0 0.6rem; padding: 0; }
+.rank li {
+  display: grid;
+  grid-template-columns: 1.4rem 8.5rem 1fr 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.18rem 0;
+}
+.rank .n { font-family: var(--lh-mono); font-size: 13px; color: var(--lh-muted); }
+.rank .t { font-size: 16px; color: var(--lh-ink); }
+.rank .v {
+  font-family: var(--lh-mono);
+  font-size: 13px;
+  color: var(--lh-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.rank .bar {
+  height: 13px;
+  border-radius: 7px 3px 8px 4px / 4px 8px 3px 7px;
+  background: var(--lh-blue-2);
+}
+.rank .off .bar { background: var(--lh-rule); }
+.rank .off .t { color: var(--lh-muted); }
+/* The host city, and the only bar that is allowed to shout. */
+.rank .host .bar { background: var(--lh-rust); }
+.rank .host .t { font-weight: 700; }
+
+.cut {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+  font-size: 13px;
+  color: var(--lh-rust);
+}
+.cut::after {
+  content: "";
+  flex: 1;
+  height: 7px;
+  background-image: var(--lh-stroke);
+  background-repeat: repeat-x;
+  background-position: left center;
+  background-size: 120px 7px;
+}
+
+/* ---------- margin note ---------- */
+
+/* The one handwritten line on the page. Printed note, handwritten margin — the
+   difference between the two is the point, so it writes exactly one thing. */
+.margin-note {
+  margin: 2rem 0;
+  font-family: var(--lh-hand);
+  font-size: 1.15em;
+  line-height: 1.5;
+  color: var(--lh-blue);
+  transform: rotate(-0.7deg);
+}
+
+/* ---------- caveats ---------- */
+
+.caveats {
+  margin: 2rem 0 0;
+  padding: 1rem 1.2rem;
+  background: var(--lh-surface);
+  border-radius: var(--lh-wobble-2);
+  font-size: 15px;
+  color: var(--lh-muted);
+}
+.caveats h2 {
+  font-size: 17px;
+  margin: 0 0 0.5rem;
+  background: none;
+  padding: 0;
+}
+.caveats ul { margin: 0; padding-left: 1.1rem; }
+.caveats li { margin-bottom: 0.4rem; }
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  font-size: 14px;
+  color: var(--lh-muted);
+  background-image: var(--lh-stroke-faint);
+  background-repeat: repeat-x;
+  background-position: left top;
+  background-size: 120px 7px;
+}
+
+@media (max-width: 30rem) {
+  body { font-size: 17px; }
+  .rank li { grid-template-columns: 1.2rem 6.5rem 1fr 2.6rem; }
+}

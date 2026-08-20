@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The bottleneck is still the portage</title>
+<meta name="description" content="Betweenness centrality on New York's in-state rail network: the top six towns are all Erie Canal towns.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<h1>The bottleneck is still the portage</h1>
+<p class="standfirst">I ran betweenness centrality on New York&rsquo;s in-state rail
+network &mdash; present-day track, 35 towns. The top six are all Erie Canal towns.</p>
+
+<figure class="corridor">
+<svg viewBox="0 0 640 150" role="img" aria-label="The six most central towns lie in west-to-east order along the Erie Canal corridor: Buffalo, Rochester, Syracuse, Rome, Utica, Little Falls.">
+  <path d="M20 52 C 90 44, 150 60, 220 51 S 350 43, 420 53 S 540 46, 620 50"
+        fill="none" stroke="#D9D2C2" stroke-width="6" stroke-linecap="round"/>
+  <path d="M20 50 C 90 42, 150 58, 220 49 S 350 41, 420 51 S 540 44, 620 48"
+        fill="none" stroke="#3959A6" stroke-width="2.5" stroke-linecap="round"/>
+  <g font-family="ui-monospace, Menlo, monospace" font-size="11" fill="#6A6D75">
+    <text x="20" y="30">west</text>
+    <text x="620" y="30" text-anchor="end">east</text>
+  </g>
+  <g fill="#22336B">
+    <circle cx="55"  cy="48" r="6"/>
+    <circle cx="223" cy="50" r="6"/>
+    <circle cx="418" cy="51" r="6"/>
+    <circle cx="510" cy="49" r="6"/>
+    <circle cx="541" cy="48" r="6"/>
+    <circle cx="590" cy="48" r="6"/>
+  </g>
+  <circle cx="223" cy="50" r="10" fill="none" stroke="#B14434" stroke-width="2.5"/>
+  <g font-family="system-ui, sans-serif" font-size="13" fill="#1D1E21" text-anchor="end">
+    <text transform="rotate(-38, 48, 68)"  x="48"  y="68">Buffalo</text>
+    <text transform="rotate(-38, 216, 70)" x="216" y="70" fill="#B14434" font-weight="700">Rochester</text>
+    <text transform="rotate(-38, 411, 71)" x="411" y="71">Syracuse</text>
+    <text transform="rotate(-38, 503, 69)" x="503" y="69">Rome</text>
+    <text transform="rotate(-38, 534, 68)" x="534" y="68">Utica</text>
+    <text transform="rotate(-38, 583, 68)" x="583" y="68">Little Falls</text>
+  </g>
+</svg>
+<figcaption>Six towns, one line. The line is the canal.</figcaption>
+</figure>
+
+<ul class="rank">
+  <li><span class="n">1</span><span class="t">Syracuse</span><span class="bar" style="width:100%"></span><span class="v">.192</span></li>
+  <li><span class="n">2</span><span class="t">Rome</span><span class="bar" style="width:73%"></span><span class="v">.141</span></li>
+  <li><span class="n">3</span><span class="t">Buffalo</span><span class="bar" style="width:71%"></span><span class="v">.136</span></li>
+  <li><span class="n">4</span><span class="t">Utica</span><span class="bar" style="width:69%"></span><span class="v">.132</span></li>
+  <li><span class="n">5</span><span class="t">Little Falls</span><span class="bar" style="width:63%"></span><span class="v">.121</span></li>
+  <li class="host"><span class="n">6</span><span class="t">Rochester</span><span class="bar" style="width:62%"></span><span class="v">.119</span></li>
+</ul>
+<p class="cut">canal ends here</p>
+<ul class="rank">
+  <li class="off"><span class="n">7</span><span class="t">Batavia</span><span class="bar" style="width:59%"></span><span class="v">.112</span></li>
+  <li class="off"><span class="n">8</span><span class="t">Johnstown</span><span class="bar" style="width:57%"></span><span class="v">.109</span></li>
+</ul>
+
+<h2>Not about size</h2>
+<p>Rome ranks 2nd with <strong>3</strong> rail connections. Buffalo has
+<strong>10</strong> and ranks 3rd. The bottlenecks are the small towns.</p>
+
+<h2>Why these towns</h2>
+<p>Rome is the <strong>Oneida Carry</strong> &mdash; boats hauled overland between
+the Mohawk and Wood Creek, the only water route from the Atlantic to the interior
+other than the St. Lawrence. Little Falls is the gorge. Both were dug through
+before the Erie Canal existed.</p>
+
+<h2>The odds</h2>
+<p>12 of the 35 towns sit on the canal. Six for six by chance:
+<strong class="num">1 in 1,757</strong>.</p>
+
+<p class="margin-note">200 years on, the same geography.</p>
+
+<div class="caveats">
+<h2>Small print</h2>
+<ul>
+  <li>Ranks 5&ndash;8 (<span class="num">.121 .119 .112 .109</span>) are within
+      noise. The claim is the <em>set</em>, not the order.</li>
+  <li>A junction belongs to a town within 10&nbsp;km of its boundary. At strict
+      city limits the main line runs 3&nbsp;km outside Rochester and it scores
+      exactly zero.</li>
+  <li>Present-day OpenStreetMap track; shortest paths weighted by length, so
+      this is geometry, not timetables.</li>
+</ul>
+</div>
+
+<footer>
+<p>CompleNet 2027 is in Rochester &mdash; 6th on this list, and on the canal.</p>
+</footer>
+
+</main>
+</body>
+</html>

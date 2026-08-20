@@ -1,0 +1,3 @@
+__pycache__/
+data/osm_cache/
+.DS_Store
