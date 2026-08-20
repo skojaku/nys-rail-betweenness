@@ -13,9 +13,8 @@ canalised in the 1790s (Little Falls 1795, five locks around a 44-foot drop;
 Rome 1797, 1.7 miles and two locks across the carry), a generation before the
 Erie.
 
-12 of the 35 towns sit on the Erie Canal main line, so six-for-six by chance is
-1 in 1,757. Counting the branch canals — Oswego, Cayuga–Seneca, Champlain — puts
-16 towns on water and the figure at 1 in 203.
+12 of the 35 towns sit on the Erie Canal main line. The top six are six of those
+twelve.
 
 ## What is measured
 
@@ -34,12 +33,9 @@ end up with a vertex on the contracted network.
 
 - Ranks 5–8 (.121 .119 .112 .109) are within noise. The claim is the *set*, not
   the order.
-- The 1-in-1,757 figure assumes every town is equally likely to reach the top
-  six. They are not — canal towns are large *because* of the canal, so read it
-  as how odd the coincidence looks, not as a test of cause. The selection is
-  also not perfectly clean: 12 of the 13 Erie main-line cities have a rail
-  vertex (92%) against 23 of 40 others (58%), so canal towns survive onto the
-  network at a higher rate. Only Cohoes drops out.
+- Canal cities are over-represented among the 35: 12 of the 13 Erie main-line
+  cities have a rail vertex (92%) against 23 of 40 others (58%). Only Cohoes
+  drops out. So the top six being canal towns is partly a head start.
 - A junction joins a town within 10 km of its boundary. At strict city limits
   Rochester scores exactly zero: the shortest Buffalo→Syracuse route takes the
   CSX **West Shore Subdivision**, which passes about 2 km south of the city
