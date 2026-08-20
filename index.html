@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The bottleneck is still the portage</title>
 <meta name="description" content="Betweenness centrality on the rail network of upstate New York: the top six towns are all Erie Canal towns.">
+<link rel="stylesheet" href="assets/anim.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,34 +16,51 @@
 New York &mdash; present-day track, 35 towns. The top six are all Erie Canal towns.</p>
 
 <figure class="corridor">
-<svg viewBox="0 0 640 150" role="img" aria-label="The six most central towns lie in west-to-east order along the Erie Canal corridor: Buffalo, Rochester, Syracuse, Rome, Utica, Little Falls.">
-  <path d="M20 52 C 90 44, 150 60, 220 51 S 350 43, 420 53 S 540 46, 620 50"
-        fill="none" stroke="#D9D2C2" stroke-width="6" stroke-linecap="round"/>
-  <path d="M20 50 C 90 42, 150 58, 220 49 S 350 41, 420 51 S 540 44, 620 48"
-        fill="none" stroke="#3959A6" stroke-width="2.5" stroke-linecap="round"/>
-  <g font-family="ui-monospace, Menlo, monospace" font-size="11" fill="#6A6D75">
-    <text x="20" y="30">west</text>
-    <text x="620" y="30" text-anchor="end">east</text>
-  </g>
-  <g fill="#22336B">
-    <circle cx="55"  cy="48" r="6"/>
-    <circle cx="223" cy="50" r="6"/>
-    <circle cx="418" cy="51" r="6"/>
-    <circle cx="510" cy="49" r="6"/>
-    <circle cx="541" cy="48" r="6"/>
-    <circle cx="590" cy="48" r="6"/>
-  </g>
-  <circle cx="223" cy="50" r="10" fill="none" stroke="#B14434" stroke-width="2.5"/>
-  <g font-family="system-ui, sans-serif" font-size="13" fill="#1D1E21" text-anchor="end">
-    <text transform="rotate(-38, 48, 68)"  x="48"  y="68">Buffalo</text>
-    <text transform="rotate(-38, 216, 70)" x="216" y="70" fill="#B14434" font-weight="700">Rochester</text>
-    <text transform="rotate(-38, 411, 71)" x="411" y="71">Syracuse</text>
-    <text transform="rotate(-38, 503, 69)" x="503" y="69">Rome</text>
-    <text transform="rotate(-38, 534, 68)" x="534" y="68">Utica</text>
-    <text transform="rotate(-38, 583, 68)" x="583" y="68">Little Falls</text>
-  </g>
+<svg viewBox="0 0 900 742" class="map" role="img" aria-label="Map of upstate New York. The six most central towns — Buffalo, Rochester, Syracuse, Rome, Utica and Little Falls — lie along one west-to-east line across the middle of the state, the line of the Erie Canal.">
+<path class="m-land" d="M744.9 715.6L684.9 677.4L685.5 675.7L683.2 673.5L682.3 671.2L679.8 670.3L678.9 668.9L679.8 665.7L679.3 664.4L672.7 666.0L670.3 662.2L667.2 664.4L663.7 661.9L659.3 663.0L658.8 662.3L659.6 659.9L657.4 659.0L656.6 656.3L652.9 655.0L650.7 656.2L647.5 655.4L647.3 650.9L644.9 650.6L644.8 647.8L642.1 645.8L643.2 644.2L642.9 642.8L635.6 633.2L637.5 632.4L637.6 631.1L639.6 631.0L638.9 623.4L637.6 621.5L638.6 620.1L638.5 618.6L636.3 614.9L638.8 614.1L638.4 607.4L637.4 604.9L635.6 603.7L632.9 604.3L631.7 603.2L633.2 599.3L635.5 598.7L635.9 596.1L633.6 596.5L630.6 594.6L630.2 590.5L628.3 590.6L627.0 589.3L624.2 589.7L622.9 585.8L621.2 588.0L618.7 586.2L616.2 588.4L613.9 586.7L611.6 587.5L611.0 586.3L611.5 583.9L610.0 583.1L610.6 579.9L609.0 573.9L607.7 573.2L607.1 571.1L606.1 572.3L604.6 571.9L602.6 568.7L600.8 567.9L601.0 564.3L598.6 563.1L26.0 563.2L26.0 471.1L133.5 415.5L137.3 402.7L136.9 396.8L133.8 392.8L130.1 392.5L122.5 385.9L122.0 382.0L125.1 375.0L124.1 373.2L115.4 371.1L117.6 365.9L116.0 363.5L119.6 359.4L118.2 354.0L118.8 349.3L117.7 347.5L117.8 339.6L115.9 338.2L99.0 304.7L165.4 272.6L411.6 272.6L458.2 190.1L469.4 183.0L474.6 171.4L483.3 170.6L488.4 168.6L493.9 164.2L494.2 156.9L498.2 154.1L502.6 153.5L509.3 147.8L515.1 144.9L519.1 145.9L524.4 142.9L525.4 141.2L526.6 141.4L538.5 130.0L540.3 122.9L545.6 115.1L579.6 81.3L590.2 72.3L591.5 69.4L597.2 67.5L600.5 62.8L601.9 63.3L606.1 59.7L605.3 57.9L608.3 55.8L615.6 52.3L616.9 50.6L627.1 47.2L627.8 43.9L631.7 43.1L632.8 41.8L636.9 41.4L641.8 38.3L644.7 36.2L646.3 32.8L648.9 31.8L657.3 31.8L659.8 28.8L662.7 28.7L667.9 26.0L671.1 26.2L672.3 28.0L676.1 27.8L676.5 29.7L680.3 30.5L681.5 29.1L687.8 28.7L688.2 27.7L689.1 29.0L755.9 30.4L860.8 26.9L859.3 31.2L861.4 35.1L861.4 43.2L859.0 46.1L857.4 52.5L855.8 55.7L856.1 57.7L861.8 63.7L862.1 66.7L857.9 74.8L857.8 82.6L858.4 83.1L857.3 84.9L857.4 88.7L856.1 89.9L855.6 91.9L856.2 92.7L855.1 93.6L854.7 96.8L856.4 100.1L855.8 102.0L856.7 104.4L861.4 109.3L865.5 117.8L867.3 129.0L864.5 137.7L861.9 142.0L865.0 158.1L864.7 159.9L863.3 163.5L860.8 164.5L858.3 169.8L854.6 172.9L853.1 180.9L851.4 183.2L851.9 186.8L849.6 192.7L848.5 198.9L852.4 203.1L851.8 210.5L852.5 212.7L852.4 219.3L853.9 224.2L856.8 229.0L855.7 232.7L857.0 234.4L854.9 236.7L854.4 238.8L859.8 247.6L857.4 252.5L857.2 255.9L852.8 262.0L851.4 268.9L850.0 270.5L849.7 271.7L851.1 274.4L849.3 280.3L853.9 283.8L855.5 282.4L855.0 279.8L856.9 277.3L856.4 276.5L857.1 273.7L859.9 274.3L862.0 273.1L865.7 273.2L866.1 276.4L867.6 278.2L866.8 281.8L868.4 281.8L871.6 284.1L874.0 289.7L873.1 293.0L869.2 413.9L868.3 414.5L868.5 418.1L867.6 420.2L869.5 430.2L871.0 430.2L839.3 547.7L840.8 554.2L842.0 554.2L842.0 555.1L834.8 675.8L777.8 683.2L744.9 715.6Z"/>
+<circle class="m-top" cx="496.6" cy="377.7" r="9.8"><title>Syracuse — betweenness 0.192</title></circle>
+<circle class="m-top" cx="581.5" cy="344.7" r="8.3"><title>Rome — betweenness 0.141</title></circle>
+<circle class="m-top" cx="144.2" cy="403.1" r="8.1"><title>Buffalo — betweenness 0.136</title></circle>
+<circle class="m-top" cx="615.9" cy="367.8" r="8.0"><title>Utica — betweenness 0.132</title></circle>
+<circle class="m-top" cx="664.0" cy="377.0" r="7.6"><title>Little Falls — betweenness 0.121</title></circle>
+<circle class="m-host" cx="305.1" cy="355.0" r="7.6"><title>Rochester — betweenness 0.119</title></circle>
+<circle class="m-town" cx="231.7" cy="385.2" r="7.4"><title>Batavia — betweenness 0.112</title></circle>
+<circle class="m-town" cx="726.5" cy="383.6" r="7.2"><title>Johnstown — betweenness 0.109</title></circle>
+<circle class="m-town" cx="784.8" cy="420.1" r="7.1"><title>Schenectady — betweenness 0.103</title></circle>
+<circle class="m-town" cx="750.5" cy="395.2" r="6.8"><title>Amsterdam — betweenness 0.096</title></circle>
+<circle class="m-town" cx="140.7" cy="383.0" r="5.9"><title>Tonawanda — betweenness 0.070</title></circle>
+<circle class="m-town" cx="441.3" cy="396.7" r="5.5"><title>Auburn — betweenness 0.059</title></circle>
+<circle class="m-town" cx="377.9" cy="536.8" r="5.1"><title>Corning — betweenness 0.050</title></circle>
+<circle class="m-town" cx="387.4" cy="409.1" r="5.0"><title>Geneva — betweenness 0.048</title></circle>
+<circle class="m-town" cx="142.5" cy="376.8" r="5.0"><title>North Tonawanda — betweenness 0.048</title></circle>
+<circle class="m-town" cx="299.0" cy="503.8" r="4.4"><title>Hornell — betweenness 0.033</title></circle>
+<circle class="m-town" cx="801.6" cy="444.3" r="4.0"><title>Albany — betweenness 0.025</title></circle>
+<circle class="m-town" cx="810.2" cy="447.7" r="4.0"><title>Rensselaer — betweenness 0.025</title></circle>
+<circle class="m-town" cx="123.2" cy="368.5" r="4.0"><title>Niagara Falls — betweenness 0.025</title></circle>
+<circle class="m-town" cx="410.0" cy="546.3" r="4.0"><title>Elmira — betweenness 0.025</title></circle>
+<circle class="m-town" cx="527.1" cy="545.0" r="3.9"><title>Binghamton — betweenness 0.022</title></circle>
+<circle class="m-town" cx="198.9" cy="548.5" r="2.9"><title>Olean — betweenness 0.005</title></circle>
+<circle class="m-town" cx="584.0" cy="80.7" r="2.4"><title>Ogdensburg — betweenness 0.000</title></circle>
+<circle class="m-town" cx="817.6" cy="432.1" r="2.4"><title>Troy — betweenness 0.000</title></circle>
+<circle class="m-town" cx="720.4" cy="661.7" r="2.4"><title>Middletown — betweenness 0.000</title></circle>
+<circle class="m-town" cx="343.8" cy="409.7" r="2.4"><title>Canandaigua — betweenness 0.000</title></circle>
+<circle class="m-town" cx="161.1" cy="533.8" r="2.4"><title>Salamanca — betweenness 0.000</title></circle>
+<circle class="m-town" cx="164.5" cy="354.7" r="2.4"><title>Lockport — betweenness 0.000</title></circle>
+<circle class="m-town" cx="804.3" cy="372.9" r="2.4"><title>Saratoga Springs — betweenness 0.000</title></circle>
+<circle class="m-town" cx="815.8" cy="402.2" r="2.4"><title>Mechanicville — betweenness 0.000</title></circle>
+<circle class="m-town" cx="803.2" cy="518.2" r="2.4"><title>Hudson — betweenness 0.000</title></circle>
+<circle class="m-town" cx="146.9" cy="417.3" r="2.4"><title>Lackawanna — betweenness 0.000</title></circle>
+<circle class="m-town" cx="449.8" cy="303.2" r="2.4"><title>Oswego — betweenness 0.000</title></circle>
+<circle class="m-town" cx="636.6" cy="482.0" r="2.4"><title>Oneonta — betweenness 0.000</title></circle>
+<circle class="m-town" cx="685.6" cy="673.7" r="2.4"><title>Port Jervis — betweenness 0.000</title></circle>
+<text class="m-lab" x="492.6" y="399.7" text-anchor="middle">Syracuse</text>
+<text class="m-lab" x="581.5" y="329.7" text-anchor="middle">Rome</text>
+<text class="m-lab" x="132.2" y="408.1" text-anchor="end">Buffalo</text>
+<text class="m-lab" x="621.9" y="390.8" text-anchor="start">Utica</text>
+<text class="m-lab" x="678.0" y="368.0" text-anchor="start">Little Falls</text>
+<text class="m-lab m-lab-host" x="305.1" y="340.0" text-anchor="middle">Rochester</text>
 </svg>
-<figcaption>Six towns, one line. The line is the canal.</figcaption>
+<figcaption>Six towns, one line across the middle of the state. The line is the canal.</figcaption>
 </figure>
 
 <ul class="rank">
@@ -72,6 +90,23 @@ the Erie.</p>
 
 <p class="margin-note">200 years on, the same geography.</p>
 
+<h2>How the score is counted</h2>
+
+<figure class="anim-stage" id="bc-anim">
+  <div class="anim-bar">
+    <div class="anim-step" data-anim-step></div>
+    <div class="anim-dots" data-anim-dots></div>
+    <button class="anim-btn" type="button" data-anim-prev aria-label="Previous step">&#9664;</button>
+    <button class="anim-btn" type="button" data-anim-play></button>
+    <button class="anim-btn" type="button" data-anim-next aria-label="Next step">&#9654;</button>
+    <button class="anim-btn" type="button" data-anim-replay>Replay</button>
+  </div>
+  <div data-anim-canvas>
+    <div data-anim-clear></div>
+  </div>
+  <figcaption class="anim-note" data-anim-note></figcaption>
+</figure>
+
 <div class="caveats">
 <h2>Small print</h2>
 <ul>
@@ -99,6 +134,8 @@ the Erie.</p>
 <p>CompleNet 2027 is in Rochester &mdash; 6th on this list, and on the canal.</p>
 </footer>
 
+<script src="assets/anim/betweenness.js"></script>
+<script src="assets/anim.js" defer></script>
 </main>
 </body>
 </html>

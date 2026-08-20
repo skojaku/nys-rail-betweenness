@@ -42,6 +42,20 @@
   --lh-pen:      3px 4px 0 -1px rgba(35, 34, 43, 0.16);
   --lh-pen-soft: 2px 3px 0 -1px rgba(35, 34, 43, 0.12);
 
+  /* The animation kit (assets/anim.css) reads these off :root and resolves them
+     once on .anim-stage. Declaring them here is how the shared kit ends up in
+     this page's palette instead of the lecture note's purple. */
+  --anim-ink: #1D1E21;
+  --anim-ink-soft: #35373C;
+  --anim-ink-faint: #A8AEB9;
+  --anim-paper: #FFFDF7;
+  --anim-white: #FFFFFF;
+  --anim-accent: #22336B;
+  --anim-accent-soft: #E4E9F5;
+  --anim-amber: #B14434;
+  --anim-amber-soft: #F7E7E2;
+  --rule: #D9D2C2;
+
   --lh-stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' viewBox='0 0 120 7'%3E%3Cpath d='M1 4.4C20 1.9 40 6.2 60 3.7 80 1.4 100 5.6 119 3.2' fill='none' stroke='%23B14434' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   --lh-stroke-faint: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' viewBox='0 0 120 7'%3E%3Cpath d='M1 4.4C20 1.9 40 6.2 60 3.7 80 1.4 100 5.6 119 3.2' fill='none' stroke='%23D9D2C2' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -102,14 +116,15 @@ a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
   font-size: 0.95em;
 }
 
-/* ---------- the corridor ---------- */
+/* ---------- the map ---------- */
 
-/* The six towns sit on one line because the canal is one line. Drawing it as a
-   sketch rather than a map is deliberate: the geography that matters here is
-   the order, not the coordinates. */
+/* The outline is the state boundary, which along the north and west is the Lake
+   Ontario and Lake Erie shore — that is what makes the shape read as New York
+   without a single tile being fetched. The rail network was drawn on here once
+   and it read as a scribble; the six dots make the line on their own. */
 .corridor {
   margin: 1.5rem 0 2rem;
-  padding: 1.1rem 0.6rem 0.5rem;
+  padding: 0.6rem 0.6rem 0.3rem;
   background: var(--lh-card);
   border: 2px solid var(--lh-ink);
   border-radius: var(--lh-wobble);
@@ -117,11 +132,44 @@ a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
 }
 .corridor svg { display: block; width: 100%; height: auto; }
 .corridor figcaption {
-  margin-top: 0.35rem;
-  padding: 0 0.6rem;
+  margin-top: 0.1rem;
+  padding: 0 0.6rem 0.3rem;
   font-size: 14px;
   color: var(--lh-muted);
 }
+
+.m-land {
+  fill: var(--lh-surface);
+  stroke: #C9C0AC;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.m-town { fill: #B4AC9A; }
+.m-top { fill: var(--lh-blue); }
+.m-host { fill: var(--lh-rust); }
+/* Knock the land out behind the letters rather than dodging the dots. */
+.m-lab {
+  font-family: var(--lh-sans);
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--lh-ink);
+  paint-order: stroke;
+  stroke: var(--lh-surface);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+.m-lab-host { fill: var(--lh-rust); }
+
+/* ---------- the betweenness animation ---------- */
+
+/* Wider than the kit's default 310px: this drawing is a six-town line, not a
+   diagram that wants to be square. */
+#bc-anim .anim-svg { max-width: 520px; }
+#bc-anim .bc-badge { font-weight: 700; fill: var(--lh-muted); }
+#bc-anim .bc-bump { fill: var(--lh-rust); }
+#bc-anim .bc-win { fill: var(--lh-rust); }
+#bc-anim .bc-win-badge { fill: var(--lh-rust); font-size: 19px; }
+#bc-anim .anim-big { color: var(--lh-rust); }
 
 /* ---------- ranking ---------- */
 
