@@ -1,6 +1,6 @@
 # The bottleneck is still the portage
 
-Betweenness centrality on New York State's in-state rail network. **The six most
+Betweenness centrality on the rail network of upstate New York. **The six most
 central towns are all Erie Canal towns** — Syracuse, Rome, Buffalo, Utica,
 Little Falls, Rochester. 7th and 8th (Batavia, Johnstown) are not on the canal.
 
@@ -9,9 +9,13 @@ Little Falls, Rochester. 7th and 8th (Batavia, Johnstown) are not on the canal.
 It is not a size effect: Rome ranks 2nd with 3 rail connections while Buffalo
 has 10 and ranks 3rd. The two small towns near the top, Rome and Little Falls,
 are both pre-canal portages — the Oneida Carry and the Mohawk gorge. Both were
-canalised in the 1790s, decades before the Erie.
+canalised in the 1790s (Little Falls 1795, five locks around a 44-foot drop;
+Rome 1797, 1.7 miles and two locks across the carry), a generation before the
+Erie.
 
-12 of the 35 towns sit on the canal, so six-for-six by chance is 1 in 1,757.
+12 of the 35 towns sit on the Erie Canal main line, so six-for-six by chance is
+1 in 1,757. Counting the branch canals — Oswego, Cayuga–Seneca, Champlain — puts
+16 towns on water and the figure at 1 in 203.
 
 ## What is measured
 
@@ -22,15 +26,27 @@ traffic: the score is the share of journeys between other towns that pass
 through this one. Shortest paths are weighted by track length — this is
 geometry, not timetables.
 
+The towns are New York's 53 incorporated cities outside those downstate
+counties, taken from the state's list, not picked along a rail line; 35 of them
+end up with a vertex on the contracted network.
+
 ## Caveats worth knowing
 
 - Ranks 5–8 (.121 .119 .112 .109) are within noise. The claim is the *set*, not
   the order.
+- The 1-in-1,757 figure assumes every town is equally likely to reach the top
+  six. They are not — canal towns are large *because* of the canal, so read it
+  as how odd the coincidence looks, not as a test of cause. The selection is
+  also not perfectly clean: 12 of the 13 Erie main-line cities have a rail
+  vertex (92%) against 23 of 40 others (58%), so canal towns survive onto the
+  network at a higher rate. Only Cohoes drops out.
 - A junction joins a town within 10 km of its boundary. At strict city limits
-  the CSX main line runs ~3 km outside Rochester, and Rochester scores exactly
-  zero — Buffalo→Syracuse round the bypass is 232 km against 235 km through it.
-  Below 10 km the ranking measures whether a main line happens to cross a
-  municipal boundary, not rail importance.
+  Rochester scores exactly zero: the shortest Buffalo→Syracuse route takes the
+  CSX **West Shore Subdivision**, which passes about 2 km south of the city
+  boundary, rather than the CSX Rochester Subdivision that runs through the city
+  — 232.5 km against 235.3 km, a 1.2% saving. Below 10 km the ranking measures
+  whether a through route happens to cross a municipal boundary, not rail
+  importance.
 - Track is filtered to `railway=rail` without a `service` tag. Filtering on
   `usage=main|branch` instead shatters the network, because US `usage` tagging
   is uneven.
