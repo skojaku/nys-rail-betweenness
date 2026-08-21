@@ -138,24 +138,69 @@ a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
   color: var(--lh-muted);
 }
 
-.m-land {
-  fill: var(--lh-surface);
-  stroke: #C9C0AC;
-  stroke-width: 1.6;
+/* Drawn by hand, in the same sense the rest of the page is: the coast is one
+   bowed pen line gone over twice, not a plotted boundary. The generator writes
+   three paths per ring — the fill, the ink, and the second pass. */
+.m-land { fill: var(--lh-surface); stroke: none; }
+.m-ink {
+  fill: none;
+  stroke: var(--lh-ink);
+  stroke-width: 1.9;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+/* The going-over stroke. Thinner, paler, and slightly out of register — that
+   offset is the whole effect; line them up and it just looks blurred. */
+.m-ink2 {
+  stroke: var(--lh-ink);
+  stroke-width: 1.1;
+  stroke-opacity: 0.34;
+  transform: translate(1.6px, 1.4px);
+}
+
+/* The main line, faint: it is the thing being measured, not the thing being
+   argued. The canal sits on top of it because the canal is the argument. */
+.m-rail {
+  fill: none;
+  stroke: var(--lh-ink);
+  stroke-opacity: 0.38;
+  stroke-width: 1.4;
+  stroke-linecap: round;
   stroke-linejoin: round;
 }
-.m-town { fill: #B4AC9A; }
+.m-canal {
+  fill: none;
+  stroke: var(--lh-blue-2);
+  stroke-opacity: 0.9;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.legend { display: inline-flex; align-items: center; gap: 0.3rem; margin-right: 0.9rem; }
+.legend i { display: inline-block; width: 1.5rem; height: 0; border-top-style: solid; }
+.legend .k-rail { border-top-width: 1.5px; border-color: rgba(29, 30, 33, 0.4); }
+.legend .k-canal { border-top-width: 3px; border-color: var(--lh-blue-2); }
+
+/* Dots get an ink outline for the same reason: a drawn dot has an edge. */
+.m-town, .m-top, .m-host { stroke: var(--lh-ink); stroke-width: 1.2; }
+.m-town { fill: #C4BCA8; stroke-opacity: 0.45; }
 .m-top { fill: var(--lh-blue); }
 .m-host { fill: var(--lh-rust); }
-/* Knock the land out behind the letters rather than dodging the dots. */
+
+/* Hand-lettered, unlike the prose. The kit draws the same distinction: body
+   text is a system face, but type *inside a drawing* is the hand — see
+   .anim-label in assets/anim.css. Six words on a map is a caption, not a read.
+   The face comes from anim.css's @font-face. */
 .m-lab {
-  font-family: var(--lh-sans);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: "Excalifont", "Bradley Hand", "Chalkboard SE", "Segoe Print",
+    "Comic Sans MS", cursive;
+  font-size: 17px;
   fill: var(--lh-ink);
+  /* Knock the land out behind the letters rather than dodging the dots. */
   paint-order: stroke;
   stroke: var(--lh-surface);
-  stroke-width: 3.5px;
+  stroke-width: 4px;
   stroke-linejoin: round;
 }
 .m-lab-host { fill: var(--lh-rust); }
@@ -164,12 +209,28 @@ a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
 
 /* Wider than the kit's default 310px: this drawing is a six-town line, not a
    diagram that wants to be square. */
-#bc-anim .anim-svg { max-width: 520px; }
-#bc-anim .bc-badge { font-weight: 700; fill: var(--lh-muted); }
+/* Wider than the kit's default 310px: nine towns in a line want the room, and
+   the type inside has to survive being scaled down with the drawing. */
+#bc-anim .anim-svg { max-width: 620px; }
+
+/* The pen went over every line twice. This is the second pass — thinner, paler
+   and deliberately out of register, which is the whole effect. */
+#bc-anim .bc-edge2 { stroke-width: 1.3; stroke-opacity: 0.4; }
+#bc-anim .anim-edge { stroke-width: 2.6; }
+#bc-anim .bc-blob { stroke-width: 2.2; }
+
+#bc-anim .bc-name { font-size: 19px; font-weight: 700; }
+#bc-anim .bc-badge { font-size: 21px; font-weight: 700; fill: var(--lh-muted); }
 #bc-anim .bc-bump { fill: var(--lh-rust); }
 #bc-anim .bc-win { fill: var(--lh-rust); }
-#bc-anim .bc-win-badge { fill: var(--lh-rust); font-size: 19px; }
+#bc-anim .bc-win-badge { fill: var(--lh-rust); font-size: 26px; }
 #bc-anim .anim-big { color: var(--lh-rust); }
+
+/* The kit's own type, one step up: this stage is read on a phone too. */
+#bc-anim .anim-step { font-size: 1.2rem; }
+#bc-anim .anim-note { font-size: 1.02rem; line-height: 1.6; }
+#bc-anim .anim-tally { font-size: 1.05rem; }
+#bc-anim .anim-caption { font-size: 0.95rem; }
 
 /* ---------- ranking ---------- */
 
