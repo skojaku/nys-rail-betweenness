@@ -59,6 +59,13 @@ python scripts/town_betweenness.py --buffer-km 10        # contracts to towns
 `data/city_betweenness_upstate_through.csv` is the junction-level aggregate it
 was derived from.
 
+The canal on the map is drawn, not surveyed. OSM's `waterway=canal` for the
+Erie comes as 208 ways with gaps wherever the route runs in the Mohawk or a
+lake, and drawn faithfully it reads as dashes. The map only has to say "one
+line, through these towns", so it is one line: waypoints down the historic route,
+smoothed and drawn with the same pen as the coast. The rail lines
+(`usage=main`) and the state outline are real geometry.
+
 Page styling reuses the design tokens of
 [adv-net-sci](https://github.com/skojaku/adv-net-sci)'s lecture notes
 (`lecture-note/m01-euler_tour/pen-and-paper/lecture-hall.css`), including its

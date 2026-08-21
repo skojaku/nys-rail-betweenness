@@ -14,11 +14,15 @@ Ontario and Lake Erie shore. That is what makes the shape read as New York.
 
 import argparse
 import math
+import random
 from pathlib import Path
+
+import json
 
 import osmnx as ox
 import pandas as pd
-from shapely.geometry import MultiPolygon
+from shapely.geometry import LineString, MultiLineString, MultiPolygon
+from shapely.ops import linemerge, unary_union
 
 from upstate_betweenness import CACHE, DOWNSTATE, city_polygons
 
@@ -26,7 +30,13 @@ HERE = Path(__file__).parent
 DATA = HERE / "data"
 
 W = 900.0
-PAD = 26.0
+PAD = 30.0
+
+# Coarser than a printed map on purpose. The hand-drawn pass bows each straight
+# run, and a 0.004-degree outline has runs a few pixels long — bowing those gives
+# fuzz, not a pen line. At 0.015 the coast is a few dozen deliberate strokes and
+# the state is still unmistakably itself.
+SIMPLIFY = 0.015
 
 # West to east. The order is the map's argument: these six lie on one line.
 CORRIDOR = ["Buffalo", "Rochester", "Syracuse", "Rome", "Utica", "Little Falls"]
@@ -49,7 +59,7 @@ def land_polygon():
     state = ox.geocode_to_gdf("New York State, USA").loc[0, "geometry"]
     down = ox.geocode_to_gdf(DOWNSTATE).union_all()
     # Finer than the download polygon: this one is looked at, not queried with.
-    return state.difference(down).simplify(0.004)
+    return state.difference(down).simplify(SIMPLIFY)
 
 
 def rings(geom):
@@ -57,6 +67,134 @@ def rings(geom):
     for p in polys:
         if p.area > 1e-4:  # drop slivers left by the county subtraction
             yield list(p.exterior.coords)
+
+
+def rough(pts, seed, amp=2.2, jitter=1.4):
+    """A ring redrawn as if by hand: every straight run becomes a slightly bowed
+    curve and every corner shifts a little.
+
+    Two things make this read as a pen rather than as noise. The bow is scaled
+    by segment length, so a short segment barely moves and a long coastline
+    sweeps; and the caller draws the ring twice with different seeds, which is
+    what a hand does when it goes back over a line it has already drawn.
+    """
+    rnd = random.Random(seed)
+    out = []
+    n = len(pts)
+    for i in range(n):
+        px_, py_ = pts[i]
+        qx, qy = pts[(i + 1) % n]
+        px_ += rnd.uniform(-jitter, jitter)
+        py_ += rnd.uniform(-jitter, jitter)
+        dx, dy = qx - px_, qy - py_
+        L = math.hypot(dx, dy) or 1.0
+        nx, ny = -dy / L, dx / L
+        k = rnd.uniform(-amp, amp) * min(1.0, L / 55.0)
+        cx, cy = (px_ + qx) / 2 + nx * k, (py_ + qy) / 2 + ny * k
+        if i == 0:
+            out.append(f"M{px_:.1f} {py_:.1f}")
+        out.append(f"Q{cx:.1f} {cy:.1f} {qx:.1f} {qy:.1f}")
+    return "".join(out) + "Z"
+
+
+def load_layer(name, land, simplify_deg, min_km):
+    """Overpass `out geom` for one layer, merged into long lines and thinned.
+
+    Merging first matters: the canal arrives as 208 separate ways and the main
+    line as 8,588, and simplifying those one at a time keeps every join. Merged,
+    a whole subdivision is one line and the tolerance can bite.
+    """
+    raw = json.loads((DATA / f"layer_{name}.json").read_text())
+    lines = [
+        LineString([(p["lon"], p["lat"]) for p in w["geometry"]])
+        for w in raw["elements"] if len(w.get("geometry", [])) > 1
+    ]
+    merged = linemerge(unary_union(lines))
+    parts = merged.geoms if isinstance(merged, MultiLineString) else [merged]
+    keep = []
+    for g in parts:
+        g = g.simplify(simplify_deg)
+        # Degrees to km at this latitude, near enough for a drop test.
+        if g.length * 85.0 < min_km:
+            continue
+        g = g.intersection(land.buffer(0.03))
+        for h in (g.geoms if hasattr(g, "geoms") else [g]):
+            if isinstance(h, LineString) and len(h.coords) > 1:
+                keep.append(list(h.coords))
+    return keep
+
+
+def rough_line(pts, seed, amp=1.4, jitter=0.7):
+    """rough(), but for an open line: no closing segment, gentler hand."""
+    rnd = random.Random(seed)
+    out = [f"M{pts[0][0]:.1f} {pts[0][1]:.1f}"]
+    for i in range(len(pts) - 1):
+        px_, py_ = pts[i]
+        qx, qy = pts[i + 1]
+        qx += rnd.uniform(-jitter, jitter)
+        qy += rnd.uniform(-jitter, jitter)
+        dx, dy = qx - px_, qy - py_
+        L = math.hypot(dx, dy) or 1.0
+        k = rnd.uniform(-amp, amp) * min(1.0, L / 45.0)
+        cx = (px_ + qx) / 2 - dy / L * k
+        cy = (py_ + qy) / 2 + dx / L * k
+        out.append(f"Q{cx:.1f} {cy:.1f} {qx:.1f} {qy:.1f}")
+    return "".join(out)
+
+
+# The Erie Canal, drawn rather than surveyed. OSM's `waterway=canal` for the
+# Erie arrives as 208 ways with gaps where the route runs in the Mohawk or a
+# lake, and drawn faithfully it reads as dashes rather than as a canal. What the
+# map has to say is "one line, through these towns", so the line is one line: a
+# spine of waypoints down the historic route, smoothed and drawn with the same
+# pen as the coast. It is approximate on purpose and the caption says so.
+CANAL_SPINE = [
+    (-78.878, 42.886),  # Buffalo, the western terminus
+    (-78.880, 43.020),  # Tonawanda
+    (-78.690, 43.171),  # Lockport
+    (-77.939, 43.213),  # Brockport
+    (-77.611, 43.155),  # Rochester, over the Genesee
+    (-77.442, 43.099),  # Fairport
+    (-77.232, 43.062),  # Palmyra
+    (-76.990, 43.064),  # Lyons
+    (-76.869, 43.084),  # Clyde
+    (-76.560, 43.049),  # Weedsport
+    (-76.148, 43.048),  # Syracuse
+    (-75.868, 43.045),  # Chittenango
+    (-75.752, 43.081),  # Canastota
+    (-75.456, 43.213),  # Rome, the Oneida Carry
+    (-75.232, 43.101),  # Utica
+    (-75.036, 43.015),  # Ilion
+    (-74.859, 43.043),  # Little Falls, the gorge
+    (-74.674, 43.001),  # St Johnsville
+    (-74.570, 42.906),  # Canajoharie
+    (-74.377, 42.956),  # Fonda
+    (-74.188, 42.938),  # Amsterdam
+    (-73.939, 42.814),  # Schenectady
+    (-73.700, 42.774),  # Cohoes
+    (-73.756, 42.652),  # Albany, where it meets the Hudson
+]
+
+
+def smooth(pts, seed, jitter=2.4):
+    """One continuous line through the waypoints, with a hand on it.
+
+    Catmull-Rom through jittered points, converted to cubics: the wobble lands
+    on the route rather than on every segment, which is what a line drawn in one
+    go looks like. Bowing each segment instead — the treatment the coast gets —
+    made the canal look serrated at this scale.
+    """
+    rnd = random.Random(seed)
+    p = [(x + rnd.uniform(-jitter, jitter), y + rnd.uniform(-jitter, jitter))
+         for x, y in pts]
+    p = [p[0]] + p + [p[-1]]
+    d = [f"M{p[1][0]:.1f} {p[1][1]:.1f}"]
+    for i in range(1, len(p) - 2):
+        a, b, c, e = p[i - 1], p[i], p[i + 1], p[i + 2]
+        c1 = (b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6)
+        c2 = (c[0] - (e[0] - b[0]) / 6, c[1] - (e[1] - b[1]) / 6)
+        d.append(f"C{c1[0]:.1f} {c1[1]:.1f} {c2[0]:.1f} {c2[1]:.1f} {c[0]:.1f} {c[1]:.1f}")
+    return "".join(d)
 
 
 def main() -> None:
@@ -81,12 +219,27 @@ def main() -> None:
     def px(lon, lat):
         return PAD + (lon * k - x0) * s, PAD + (y1 - lat) * s  # north is up
 
-    shapes = [
-        '<path class="m-land" d="M'
-        + "L".join(f"{a:.1f} {b:.1f}" for a, b in (px(x, y) for x, y in ring))
-        + 'Z"/>'
-        for ring in rings(land)
-    ]
+    shapes = []
+    for ri, ring in enumerate(rings(land)):
+        pts = [px(x, y) for x, y in ring[:-1]]
+        first = rough(pts, seed=101 + ri)
+        second = rough(pts, seed=202 + ri, amp=2.8, jitter=2.0)
+        shapes.append(f'<path class="m-land" d="{first}"/>')
+        shapes.append(f'<path class="m-ink" d="{first}"/>')
+        shapes.append(f'<path class="m-ink m-ink2" d="{second}"/>')
+
+    # Main line first, canal on top: where they run together — and along the
+    # Mohawk they run within sight of each other — the canal is the argument.
+    rails = load_layer("mainrail", land, 0.010, 12)
+    for coords in rails:
+        pts = [px(x, y) for x, y in coords]
+        shapes.append(f'<path class="m-rail" d="{rough_line(pts, seed=len(shapes), amp=1.1)}"/>')
+
+    spine = [px(x, y) for x, y in CANAL_SPINE]
+    shapes.append(f'<path class="m-canal" d="{smooth(spine, seed=7)}"/>')
+    shapes.append(f'<path class="m-canal m-canal2" d="{smooth(spine, seed=23, jitter=3.4)}"/>')
+    print(f"  main line: {len(rails)} strokes, canal: one line of "
+          f"{len(CANAL_SPINE)} waypoints")
 
     bmax = towns["betweenness"].max()
     dots, labels = [], []

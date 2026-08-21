@@ -171,11 +171,13 @@ a:hover { color: var(--lh-rust); text-decoration-color: currentColor; }
 .m-canal {
   fill: none;
   stroke: var(--lh-blue-2);
-  stroke-opacity: 0.9;
-  stroke-width: 2.8;
+  stroke-opacity: 0.92;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+/* Gone over a second time, like the coast. */
+.m-canal2 { stroke-width: 1.6; stroke-opacity: 0.4; }
 
 .legend { display: inline-flex; align-items: center; gap: 0.3rem; margin-right: 0.9rem; }
 .legend i { display: inline-block; width: 1.5rem; height: 0; border-top-style: solid; }
